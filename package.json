@@ -1,0 +1,32 @@
+{
+  "name": "bip370org",
+  "version": "0.1.0",
+  "description": "A simple PSBTv2 explorer.",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "python -m http.server & webpack"
+  },
+  "author": "Shadouts",
+  "license": "ISC",
+  "dependencies": {
+    "@caravan/bitcoin": "0.0.3",
+    "@caravan/psbt": "^1.2.0",
+    "@types/bootstrap": "^5.2.10",
+    "@types/react": "^18.2.74",
+    "@types/react-bootstrap": "^0.32.36",
+    "@types/react-dom": "^18.2.24",
+    "bitcoinjs-lib": "^7.0.0-rc.0",
+    "bootstrap": "^5.3.3",
+    "prettier": "^3.2.5",
+    "react": "^18.2.0",
+    "react-bootstrap": "^2.10.2",
+    "react-dom": "^18.2.0",
+    "stream-browserify": "^3.0.0",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.4.4",
+    "webpack": "^5.91.0",
+    "webpack-cli": "^5.1.4"
+  }
+}
