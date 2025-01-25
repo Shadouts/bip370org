@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { PageContext } from "../Page";
 import { GlobalItem } from "./GlobalItem";
 

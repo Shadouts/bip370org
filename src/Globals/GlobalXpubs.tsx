@@ -1,8 +1,8 @@
 import { useContext } from "react";
 import { Col, ListGroup } from "react-bootstrap";
-import { bip32SequenceToPath } from "@caravan/bitcoin";
 import { PageContext } from "../Page";
 import { GlobalItem } from "./GlobalItem";
+import { bip32StringSlicer, getBip32Path, getXpub } from "../functions";
 
 export const GlobalXpubs = () => {
   const { psbt } = useContext(PageContext);
@@ -11,16 +11,13 @@ export const GlobalXpubs = () => {
   for (const [i, el] of (
     psbt.PSBT_GLOBAL_XPUB as { key: string; value: string }[]
   ).entries()) {
-    console.log(Buffer.from(el.value.slice(8), "hex"));
+    const [fingerprint, sequence] = bip32StringSlicer(el.value);
+    const xpub = getXpub(el.key.slice(2));
     components.push(
       <ListGroup key={i} style={{ marginBottom: 12 }}>
         <GlobalItem
-          label={`#${i} xpub fingerprint`}
-          value={el.value.slice(0, 8)}
-        />
-        <GlobalItem
           label={`#${i} xpub BIP 32 path`}
-          value={bip32SequenceToPath(Buffer.from(el.value.slice(8), "hex"))}
+          value={`(${fingerprint}) ${getBip32Path(sequence)}`}
         />
         <ListGroup.Item>
           <span
@@ -30,7 +27,7 @@ export const GlobalXpubs = () => {
               wordBreak: "break-all",
             }}
           >
-            {el.key.slice(2)}
+            {xpub}
           </span>
         </ListGroup.Item>
       </ListGroup>,

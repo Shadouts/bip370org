@@ -1,16 +1,17 @@
-import React from 'react';
-import { createRoot } from 'react-dom/client';
+import { createRoot } from "react-dom/client";
 
-import { Navbar } from './Navbar';
-import { Page } from './Page';
+import { Navbar } from "./Navbar";
+import { Page, withContext } from "./Page";
 
 document.body.innerHTML = '<div id="app"></div>';
 
-const root = createRoot(document.getElementById('app') as Element);
-root.render(
+const RootComponent = withContext(() => (
   <>
     <Navbar />
     <br />
     <Page />
   </>
-);
+));
+
+const root = createRoot(document.getElementById("app") as Element);
+root.render(<RootComponent />);

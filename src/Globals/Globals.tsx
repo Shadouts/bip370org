@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import { Col, Card, Row, ListGroup, Badge, Stack } from "react-bootstrap";
+import { useContext } from "react";
+import { Col, Card, Row, ListGroup } from "react-bootstrap";
 import { PageContext } from "../Page";
 import { GlobalItem } from "./GlobalItem";
 import { TxModifiableFlags } from "./TxModifiableFlags";
@@ -25,7 +25,7 @@ export const Globals = () => {
   return (
     <Col>
       <Card>
-        <Card.Header>Gobal keys</Card.Header>
+        <Card.Header>Global</Card.Header>
         <Card.Body>
           <Row>
             <Col sm={5}>
@@ -42,6 +42,7 @@ export const Globals = () => {
                   label="Fallback locktime"
                   value={psbt.PSBT_GLOBAL_FALLBACK_LOCKTIME}
                 />
+                <GlobalItem label="Computed locktime" value={psbt.nLockTime} />
                 {xpubs && <MovableItems />}
               </ListGroup>
             </Col>

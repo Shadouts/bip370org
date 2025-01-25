@@ -10,12 +10,20 @@ export const GlobalItem = ({
   style?: any;
 }) => (
   <ListGroup.Item>
-    <Row>
-      <Col>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        gap: "1rem",
+      }}
+    >
+      <div style={{ flexShrink: 0 }}>
         <b>{label}</b>
-      </Col>
-      <Col
+      </div>
+      <div
         style={{
+          paddingTop: 4,
+          flexGrow: 1,
           textAlign: "right",
           fontFamily: "monospace",
           fontSize: 12,
@@ -24,7 +32,7 @@ export const GlobalItem = ({
         }}
       >
         {value?.toString()}
-      </Col>
-    </Row>
+      </div>
+    </div>
   </ListGroup.Item>
 );

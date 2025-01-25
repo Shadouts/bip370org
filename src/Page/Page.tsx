@@ -1,15 +1,15 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
-import { PageContext, withContext } from "./context";
+import { PageContext } from "./context";
 import { SerializedInput } from "../SerializedInput";
 import { InputsOutputs } from "../InputsOutputs";
 import { Globals } from "../Globals";
 import { Col } from "react-bootstrap";
 import { Psbt } from "../Psbt";
 
-export const Page = withContext(() => {
+export const Page = () => {
   const { psbt } = useContext(PageContext);
   return (
     <Container>
@@ -38,4 +38,4 @@ export const Page = withContext(() => {
       </Row>
     </Container>
   );
-});
+};

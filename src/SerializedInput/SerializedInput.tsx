@@ -4,7 +4,6 @@ import Row from "react-bootstrap/Row";
 import Form from "react-bootstrap/Form";
 import { IPageContext, PageContext } from "../Page";
 import { PsbtV2, getPsbtVersionNumber } from "@caravan/psbt";
-import { validBase64, validateHex } from "@caravan/bitcoin";
 import { Button, InputGroup } from "react-bootstrap";
 import { getEncoding } from "../functions";
 
