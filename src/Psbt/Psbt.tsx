@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext, useMemo } from "react";
 import { PageContext } from "../Page";
 import {
   Badge,
@@ -10,10 +10,18 @@ import {
   ToggleButton,
   ToggleButtonGroup,
 } from "react-bootstrap";
-import { GlobalItem } from "../Globals/GlobalItem";
 
 export const Psbt = () => {
-  const { psbt, encoding, setState } = useContext(PageContext);
+  const { convertedFromV0, psbt, encoding, serializeAsV0, setState } =
+    useContext(PageContext);
+
+  const serializedPsbt = useMemo(() => {
+    if (serializeAsV0 === "false") {
+      return psbt.serialize(encoding || undefined);
+    } else {
+      return psbt.toV0(encoding || undefined);
+    }
+  }, [encoding, serializeAsV0]);
 
   return (
     <Col>
@@ -50,7 +58,42 @@ export const Psbt = () => {
                 </ToggleButtonGroup>
               </Row>
               <br />
+              <Row content="center">
+                <ToggleButtonGroup
+                  type="radio"
+                  name="version-toggle"
+                  value={serializeAsV0}
+                  onChange={(value) => setState({ serializeAsV0: value })}
+                >
+                  <ToggleButton
+                    id="serialize-v2-button"
+                    size="sm"
+                    value="false"
+                    variant={
+                      serializeAsV0 === "false" ? "primary" : "outline-primary"
+                    }
+                  >
+                    As v2
+                  </ToggleButton>
+                  <ToggleButton
+                    id="serialize-v0-button"
+                    size="sm"
+                    value="true"
+                    variant={
+                      serializeAsV0 === "true" ? "primary" : "outline-primary"
+                    }
+                  >
+                    As v0
+                  </ToggleButton>
+                </ToggleButtonGroup>
+              </Row>
+              <br />
               <Stack direction="vertical" gap={1}>
+                {convertedFromV0 && (
+                  <Badge pill bg="success">
+                    Converted from PSBTv0
+                  </Badge>
+                )}
                 <Badge
                   pill
                   bg={psbt.isReadyForConstructor ? "primary" : "secondary"}
@@ -95,7 +138,7 @@ export const Psbt = () => {
                 <ListGroup.Item>
                   <Row>
                     <Col md={3}>
-                      <b>Serialized PSBT</b>
+                      <b>{`Serialized PSBT${serializeAsV0 === "true" ? "v0" : ""}`}</b>
                     </Col>
                     <Col
                       style={{
@@ -105,7 +148,7 @@ export const Psbt = () => {
                         wordBreak: "break-all",
                       }}
                     >
-                      {psbt.serialize(encoding || undefined)}
+                      {serializedPsbt}
                     </Col>
                   </Row>
                 </ListGroup.Item>

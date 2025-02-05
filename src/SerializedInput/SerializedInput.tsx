@@ -16,7 +16,8 @@ const handleSubmit = (
   setError("");
 
   let psbt = new PsbtV2(),
-    encoding: IPageContext["encoding"] = null;
+    encoding: IPageContext["encoding"] = null,
+    convertedFromV0: boolean = false;
   try {
     const workingValue = value || undefined;
     const version = workingValue ? getPsbtVersionNumber(value) : 2;
@@ -27,12 +28,13 @@ const handleSubmit = (
       psbt = new PsbtV2(value);
     } else {
       psbt = PsbtV2.FromV0(value, true);
+      convertedFromV0 = true;
     }
   } catch (err) {
     console.error(err);
     setError(String(err));
   } finally {
-    setState({ psbt, encoding });
+    setState({ psbt, encoding, convertedFromV0 });
     unsetTextField();
   }
 };

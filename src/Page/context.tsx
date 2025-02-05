@@ -7,6 +7,8 @@ interface IPageState {
   encoding: "hex" | "base64" | null;
   network: Exclude<Network, Network.SIGNET>;
   containsTpubs: boolean;
+  convertedFromV0: boolean;
+  serializeAsV0: "true" | "false";
 }
 
 export interface IPageContext extends IPageState {
@@ -31,6 +33,8 @@ const defaultState: IPageState = {
   encoding: "base64",
   network: Network.TESTNET,
   containsTpubs: false,
+  convertedFromV0: false,
+  serializeAsV0: "false",
 };
 
 export const PageContext = createContext<IPageContext>({
