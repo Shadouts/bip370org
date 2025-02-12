@@ -20,6 +20,12 @@ export const Navbar = () => {
           <Nav className="me-auto">
             <NavDropdown title="Github" id="basic-nav-dropdown">
               <NavDropdown.Item
+                href="https://github.com/Shadouts/bip370org"
+                target="_blank"
+              >
+                bip370org (this site)
+              </NavDropdown.Item>
+              <NavDropdown.Item
                 href="https://github.com/caravan-bitcoin/caravan"
                 target="_blank"
               >
@@ -29,13 +35,13 @@ export const Navbar = () => {
                 href="https://github.com/bitcoin/bips/blob/master/bip-0370.mediawiki"
                 target="_blank"
               >
-                Bip 370
+                BIP 370
               </NavDropdown.Item>
               <NavDropdown.Item
                 href="https://github.com/bitcoin/bips/blob/master/bip-0174.mediawiki"
                 target="_blank"
               >
-                Bip 174
+                BIP 174
               </NavDropdown.Item>
             </NavDropdown>
           </Nav>
