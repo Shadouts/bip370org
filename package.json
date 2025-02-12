@@ -6,7 +6,8 @@
   "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "python -m http.server & webpack"
+    "dev": "python -m http.server & webpack --config webpack.dev.config.js",
+    "build": "webpack"
   },
   "author": "Shadouts",
   "license": "ISC",
