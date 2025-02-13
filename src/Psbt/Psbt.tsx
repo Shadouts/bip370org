@@ -21,7 +21,7 @@ export const Psbt = () => {
     } else {
       return psbt.toV0(encoding || undefined);
     }
-  }, [encoding, serializeAsV0]);
+  }, [encoding, psbt, serializeAsV0]);
 
   return (
     <Col>
