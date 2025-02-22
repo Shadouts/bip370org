@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { Col, ListGroup } from "react-bootstrap";
 import { PageContext } from "../Page";
 import { GlobalItem } from "./GlobalItem";
-import { bip32StringSlicer, getBip32Path, getXpub } from "../functions";
+import { bip32StringSlicer, formatBip32Path, getXpub } from "../functions";
 
 export const GlobalXpubs = () => {
   const { psbt } = useContext(PageContext);
@@ -13,12 +13,10 @@ export const GlobalXpubs = () => {
   ).entries()) {
     const [fingerprint, sequence] = bip32StringSlicer(el.value);
     const xpub = getXpub(el.key.slice(2));
+    let path = formatBip32Path(fingerprint, sequence);
     components.push(
       <ListGroup key={i} style={{ marginBottom: 12 }}>
-        <GlobalItem
-          label={`#${i} xpub BIP 32 path`}
-          value={`(${fingerprint}) ${getBip32Path(sequence)}`}
-        />
+        <GlobalItem label={`#${i} xpub BIP 32 path`} value={path} />
         <ListGroup.Item>
           <span
             style={{

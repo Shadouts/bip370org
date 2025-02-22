@@ -3,9 +3,8 @@ import React, { useContext, useState } from "react";
 import Row from "react-bootstrap/Row";
 import Form from "react-bootstrap/Form";
 import { IPageContext, PageContext } from "../Page";
-import { PsbtV2, getPsbtVersionNumber } from "@caravan/psbt";
 import { Button, InputGroup } from "react-bootstrap";
-import { getEncoding } from "../functions";
+import { handleSetNewPsbt } from "../functions";
 
 const handleSubmit = (
   value: string,
@@ -15,26 +14,12 @@ const handleSubmit = (
 ) => {
   setError("");
 
-  let psbt = new PsbtV2(),
-    encoding: IPageContext["encoding"] = null,
-    convertedFromV0: boolean = false;
   try {
-    const workingValue = value || undefined;
-    const version = workingValue ? getPsbtVersionNumber(value) : 2;
-
-    encoding = getEncoding(value);
-
-    if (version === 2) {
-      psbt = new PsbtV2(value);
-    } else {
-      psbt = PsbtV2.FromV0(value, true);
-      convertedFromV0 = true;
-    }
+    handleSetNewPsbt(value, setState);
   } catch (err) {
     console.error(err);
     setError(String(err));
   } finally {
-    setState({ psbt, encoding, convertedFromV0 });
     unsetTextField();
   }
 };
