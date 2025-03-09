@@ -1,5 +1,9 @@
 import { useContext, useMemo } from "react";
-import { PageContext } from "../Page";
+import {
+  PageContext,
+  useCurrentPsbtTransactionVersion,
+  usePsbt,
+} from "../Page";
 import {
   Badge,
   Card,
@@ -12,8 +16,9 @@ import {
 } from "react-bootstrap";
 
 export const Psbt = () => {
-  const { convertedFromV0, psbt, encoding, serializeAsV0, setState } =
-    useContext(PageContext);
+  const { encoding, serializeAsV0, setState } = useContext(PageContext);
+  const psbt = usePsbt();
+  const version = useCurrentPsbtTransactionVersion();
 
   const serializedPsbt = useMemo(() => {
     if (serializeAsV0 === "false") {
@@ -89,7 +94,7 @@ export const Psbt = () => {
               </Row>
               <br />
               <Stack direction="vertical" gap={1}>
-                {convertedFromV0 && (
+                {version === 0 && (
                   <Badge pill bg="success">
                     Converted from PSBTv0
                   </Badge>

@@ -1,23 +1,114 @@
-import { useContext } from "react";
-import { PageContext } from "../Page";
-import { Card, Col, ListGroup, Row } from "react-bootstrap";
+import { usePsbt, useUpdatePsbt } from "../Page";
+import {
+  Card,
+  Col,
+  ListGroup,
+  OverlayTrigger,
+  Row,
+  Tooltip,
+} from "react-bootstrap";
 import { GlobalItem } from "../Globals/GlobalItem";
 import { Bip32Derivation } from "./Bip32Derivation";
 import { InputPartialSigs } from "./InputPartialSigs";
 import { InputSighashType } from "./InputSighashType";
 import { InputHashes } from "./InputHashes";
+import { useCallback, useMemo } from "react";
+
+const InputHeader = ({ index: i }: { index: number }) => {
+  const psbt = usePsbt();
+  const updatePsbt = useUpdatePsbt();
+
+  const canDelete = useMemo(() => {
+    if (
+      psbt.PSBT_GLOBAL_TX_MODIFIABLE.includes(
+        "INPUTS" as (typeof psbt.PSBT_GLOBAL_TX_MODIFIABLE)[0],
+      ) &&
+      (psbt.isReadyForConstructor || psbt.isReadyForUpdater)
+    ) {
+      return true;
+    }
+    return false;
+  }, [
+    psbt.PSBT_GLOBAL_TX_MODIFIABLE,
+    psbt.isReadyForConstructor,
+    psbt.isReadyForUpdater,
+  ]);
+
+  const onDelete = useCallback(() => {
+    if (
+      psbt.PSBT_GLOBAL_TX_MODIFIABLE.includes(
+        "SIGHASH_SINGLE" as (typeof psbt.PSBT_GLOBAL_TX_MODIFIABLE)[0],
+      )
+    ) {
+      psbt.deleteOutput(i);
+    }
+
+    psbt.deleteInput(i);
+    if (
+      psbt.PSBT_GLOBAL_INPUT_COUNT === 0 &&
+      psbt.PSBT_GLOBAL_TX_MODIFIABLE.includes(
+        "SIGHASH_SINGLE" as (typeof psbt.PSBT_GLOBAL_TX_MODIFIABLE)[0],
+      )
+    ) {
+      psbt.PSBT_GLOBAL_TX_MODIFIABLE = psbt.PSBT_GLOBAL_TX_MODIFIABLE.filter(
+        (el) =>
+          el !==
+          ("SIGHASH_SINGLE" as (typeof psbt.PSBT_GLOBAL_TX_MODIFIABLE)[0]),
+      );
+    }
+
+    updatePsbt(psbt);
+  }, [updatePsbt, psbt]);
+
+  return (
+    <Card.Header>
+      <Row>
+        <Col x={2}>{`#${i}`}</Col>
+        <Col style={{ textAlign: "right" }}>
+          <Row>
+            <Col xs={canDelete ? 11 : 12}>
+              {`${psbt.PSBT_IN_PREVIOUS_TXID[i]}:${psbt.PSBT_IN_OUTPUT_INDEX[i]}`}
+            </Col>
+            {canDelete && (
+              <Col>
+                <OverlayTrigger overlay={<Tooltip>Delete input</Tooltip>}>
+                  <b onClick={onDelete} style={{ cursor: "pointer" }}>
+                    <u>␡</u>
+                  </b>
+                </OverlayTrigger>
+              </Col>
+            )}
+          </Row>
+        </Col>
+      </Row>
+    </Card.Header>
+  );
+};
 
 export const Input = ({ index: i }: { index: number }) => {
-  const { psbt } = useContext(PageContext);
+  const psbt = usePsbt();
+  const updatePsbt = useUpdatePsbt();
+
+  const setSequence = useCallback(
+    (sequence: string) => {
+      psbt.setInputSequence(i, Number(sequence));
+      updatePsbt(psbt);
+    },
+    [psbt, updatePsbt],
+  );
+
+  const canEditSequence = useMemo(
+    () =>
+      psbt.isReadyForUpdater &&
+      psbt.PSBT_GLOBAL_TX_MODIFIABLE.includes(
+        "INPUTS" as (typeof psbt.PSBT_GLOBAL_TX_MODIFIABLE)[0],
+      ),
+    [psbt],
+  );
 
   return (
     <Card style={{ marginBottom: "1rem" }}>
-      <Card.Header>
-        <Row>
-          <Col>{`#${i}`}</Col>
-          <Col>{`${psbt.PSBT_IN_PREVIOUS_TXID[i]}:${psbt.PSBT_IN_OUTPUT_INDEX[i]}`}</Col>
-        </Row>
-      </Card.Header>
+      <InputHeader index={i} />
       <Card.Body>
         <ListGroup>
           {psbt.PSBT_IN_NON_WITNESS_UTXO[i] && (
@@ -81,9 +172,13 @@ export const Input = ({ index: i }: { index: number }) => {
           {psbt.PSBT_IN_HASH256[i] && (
             <InputHashes inputIndex={i} type="HASH256" />
           )}
-          {psbt.PSBT_IN_SEQUENCE[i] && (
-            <GlobalItem label="Sequence" value={psbt.PSBT_IN_SEQUENCE[i]} />
-          )}
+          <GlobalItem
+            editable={canEditSequence}
+            editingType="number"
+            label="Sequence"
+            value={psbt.PSBT_IN_SEQUENCE[i]}
+            onChange={setSequence}
+          />
           {psbt.PSBT_IN_REQUIRED_TIME_LOCKTIME[i] && (
             <GlobalItem
               label="Required time locktime"

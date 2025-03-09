@@ -1,42 +1,34 @@
-import React, { useContext, useState } from "react";
+import { useCallback, useState } from "react";
 
 import Row from "react-bootstrap/Row";
 import Form from "react-bootstrap/Form";
-import { IPageContext, PageContext } from "../Page";
 import { Button, InputGroup } from "react-bootstrap";
-import { handleSetNewPsbt } from "../functions";
-
-const handleSubmit = (
-  value: string,
-  setState: IPageContext["setState"],
-  setError: (err: string) => void,
-  unsetTextField: () => void,
-) => {
-  setError("");
-
-  try {
-    handleSetNewPsbt(value, setState);
-  } catch (err) {
-    console.error(err);
-    setError(String(err));
-  } finally {
-    unsetTextField();
-  }
-};
+import { useUpdatePsbt } from "../Page";
 
 export const SerializedInput = () => {
   const [rawPsbtField, setRawPsbtField] = useState("");
   const [error, setError] = useState("");
-  const { setState } = useContext(PageContext);
+  const updatePsbt = useUpdatePsbt();
+
+  const handleSubmit = useCallback(() => {
+    setError("");
+
+    try {
+      updatePsbt(rawPsbtField);
+    } catch (err) {
+      console.error(err);
+      setError(String(err));
+    } finally {
+      setRawPsbtField("");
+    }
+  }, [rawPsbtField]);
 
   return (
     <Row>
       <Form
         onSubmit={(e) => {
           e.preventDefault();
-          handleSubmit(rawPsbtField, setState, setError, () =>
-            setRawPsbtField(""),
-          );
+          handleSubmit();
         }}
       >
         <Form.Group>

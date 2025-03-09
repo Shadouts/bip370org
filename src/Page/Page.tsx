@@ -1,8 +1,6 @@
-import { useContext } from "react";
-
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
-import { PageContext } from "./context";
+import { usePsbt } from "./context";
 import { SerializedInput } from "../SerializedInput";
 import { InputsOutputs } from "../InputsOutputs";
 import { Globals } from "../Globals";
@@ -10,7 +8,7 @@ import { Col } from "react-bootstrap";
 import { Psbt } from "../Psbt";
 
 export const Page = () => {
-  const { psbt } = useContext(PageContext);
+  const psbt = usePsbt();
   return (
     <Container>
       <Row>

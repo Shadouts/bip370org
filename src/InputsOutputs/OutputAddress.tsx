@@ -1,10 +1,11 @@
 import { useContext, useMemo } from "react";
-import { PageContext } from "../Page";
+import { PageContext, usePsbt } from "../Page";
 import { address, networks } from "bitcoinjs-lib";
 import { Network } from "@caravan/bitcoin";
 
 export const OutputAddress = ({ index: i }: { index: number }) => {
-  const { psbt, network } = useContext(PageContext);
+  const { network } = useContext(PageContext);
+  const psbt = usePsbt();
   const outScript = psbt.PSBT_OUT_SCRIPT[i];
 
   const scriptPubKeyBuf = useMemo(() => {

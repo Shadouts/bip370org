@@ -1,11 +1,10 @@
-import { useContext } from "react";
 import { Col, ListGroup } from "react-bootstrap";
-import { PageContext } from "../Page";
+import { usePsbt } from "../Page";
 import { GlobalItem } from "./GlobalItem";
 import { bip32StringSlicer, formatBip32Path, getXpub } from "../functions";
 
 export const GlobalXpubs = () => {
-  const { psbt } = useContext(PageContext);
+  const psbt = usePsbt();
 
   let components = [];
   for (const [i, el] of (

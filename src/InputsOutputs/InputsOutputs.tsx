@@ -1,5 +1,4 @@
-import React, { useContext } from "react";
-import { PageContext } from "../Page";
+import { usePsbt } from "../Page";
 import { Input } from "./Input";
 import { Output } from "./Output";
 
@@ -10,7 +9,7 @@ export const InputsOutputs = ({
   direction: "input" | "output";
   count: number;
 }) => {
-  const { psbt } = useContext(PageContext);
+  const psbt = usePsbt();
 
   let children = [];
   for (let i = 0; i < count; i++) {

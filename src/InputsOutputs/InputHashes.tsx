@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import { PageContext } from "../Page";
+import React from "react";
+import { usePsbt } from "../Page";
 import { GlobalItem } from "../Globals/GlobalItem";
 
 export const InputHashes = ({
@@ -9,7 +9,7 @@ export const InputHashes = ({
   inputIndex: number;
   type: "RIPEMD160" | "SHA256" | "HASH160" | "HASH256";
 }) => {
-  const { psbt } = useContext(PageContext);
+  const psbt = usePsbt();
   let hashes: { key: string; value: string | null }[] = [];
   if (type === "RIPEMD160") {
     hashes = psbt.PSBT_IN_RIPEMD160[inputIndex];

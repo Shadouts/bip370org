@@ -1,9 +1,8 @@
-import { useContext } from "react";
-import { PageContext } from "../Page";
+import { usePsbt } from "../Page";
 import { GlobalItem } from "./GlobalItem";
 
 export const TxModifiableFlags = () => {
-  const { psbt } = useContext(PageContext);
+  const psbt = usePsbt();
 
   let txModifiable = "";
   for (const flag of psbt.PSBT_GLOBAL_TX_MODIFIABLE) {

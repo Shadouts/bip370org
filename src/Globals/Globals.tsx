@@ -1,12 +1,12 @@
-import { useContext } from "react";
+import { useCallback, useMemo } from "react";
 import { Col, Card, Row, ListGroup } from "react-bootstrap";
-import { PageContext } from "../Page";
 import { GlobalItem } from "./GlobalItem";
 import { TxModifiableFlags } from "./TxModifiableFlags";
 import { GlobalXpubs } from "./GlobalXpubs";
+import { usePsbt, useUpdatePsbt } from "../Page/context";
 
 const MovableItems = () => {
-  const { psbt } = useContext(PageContext);
+  const psbt = usePsbt();
 
   return (
     <>
@@ -18,7 +18,32 @@ const MovableItems = () => {
 };
 
 export const Globals = () => {
-  const { psbt } = useContext(PageContext);
+  const psbt = usePsbt();
+  const updatePsbt = useUpdatePsbt();
+
+  const editableFallbackLocktime = useMemo(
+    () =>
+      psbt.isReadyForConstructor ||
+      // it's is in Creator role (but not ready for constructor). There is no
+      // isInCreatorRole or such method, so checking that it's not ready for
+      // these other stages is sufficient.
+      (!psbt.isReadyForUpdater &&
+        !psbt.isReadyForSigner &&
+        !psbt.isReadyForInputFinalizer),
+    [psbt],
+  );
+
+  const fallbackLocktimeOnChange = useCallback(
+    (locktime: string) => {
+      if (locktime === "") {
+        psbt.PSBT_GLOBAL_FALLBACK_LOCKTIME = null;
+      } else if (!isNaN(parseInt(locktime))) {
+        psbt.PSBT_GLOBAL_FALLBACK_LOCKTIME = parseInt(locktime);
+      }
+      updatePsbt(psbt);
+    },
+    [updatePsbt, psbt],
+  );
 
   const xpubs = psbt.PSBT_GLOBAL_XPUB.length > 0;
 
@@ -39,6 +64,9 @@ export const Globals = () => {
                   value={psbt.PSBT_GLOBAL_TX_VERSION}
                 />
                 <GlobalItem
+                  editable={editableFallbackLocktime}
+                  editingType="number"
+                  onChange={fallbackLocktimeOnChange}
                   label="Fallback locktime"
                   value={psbt.PSBT_GLOBAL_FALLBACK_LOCKTIME}
                 />

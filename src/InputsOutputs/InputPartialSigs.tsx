@@ -1,9 +1,9 @@
-import React, { useContext } from "react";
+import React from "react";
 import { GlobalItem } from "../Globals/GlobalItem";
-import { PageContext } from "../Page";
+import { usePsbt } from "../Page";
 
 export const InputPartialSigs = ({ inputIndex }: { inputIndex: number }) => {
-  const { psbt } = useContext(PageContext);
+  const psbt = usePsbt();
   const partialSigs: { key: string; value: string | null }[] =
     psbt.PSBT_IN_PARTIAL_SIG[inputIndex];
 

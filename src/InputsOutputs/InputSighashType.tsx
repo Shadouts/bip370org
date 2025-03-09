@@ -1,10 +1,9 @@
-import { useContext } from "react";
 import { GlobalItem } from "../Globals/GlobalItem";
 import { SighashType as SighashTypeEnum } from "../types";
-import { PageContext } from "../Page";
+import { usePsbt } from "../Page";
 
 export const InputSighashType = ({ inputIndex }: { inputIndex: number }) => {
-  const { psbt } = useContext(PageContext);
+  const psbt = usePsbt();
   const sighashType = psbt.PSBT_IN_SIGHASH_TYPE[inputIndex];
   if (sighashType === null) {
     return null;
