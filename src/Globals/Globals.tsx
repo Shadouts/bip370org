@@ -1,5 +1,12 @@
 import { useCallback, useMemo } from "react";
-import { Col, Card, Row, ListGroup } from "react-bootstrap";
+import {
+  Col,
+  Card,
+  Row,
+  ListGroup,
+  OverlayTrigger,
+  Popover,
+} from "react-bootstrap";
 import { GlobalItem } from "./GlobalItem";
 import { TxModifiableFlags } from "./TxModifiableFlags";
 import { GlobalXpubs } from "./GlobalXpubs";
@@ -15,6 +22,35 @@ const MovableItems = () => {
       <TxModifiableFlags />
     </>
   );
+};
+
+const VersionItem = ({ txVersion }: { txVersion: number }) => {
+  if (txVersion === 1) {
+    return (
+      <OverlayTrigger
+        trigger={["hover", "focus"]}
+        overlay={
+          <Popover id="popover-basic">
+            <Popover.Body>
+              This PSBTv2 has a transaction version of 1. This is BIP370
+              non-compliant and could be due to a conversion from a PSBTv0.
+              Please use caution when handling special cases of locktime.
+            </Popover.Body>
+          </Popover>
+        }
+      >
+        <div>
+          <GlobalItem
+            style={{ color: "red" }}
+            label="Tx version"
+            value={txVersion}
+          />
+        </div>
+      </OverlayTrigger>
+    );
+  }
+
+  return <GlobalItem label="Tx version" value={txVersion} />;
 };
 
 export const Globals = () => {
@@ -59,10 +95,7 @@ export const Globals = () => {
                   label="Psbt version"
                   value={psbt.PSBT_GLOBAL_VERSION}
                 />
-                <GlobalItem
-                  label="Tx version"
-                  value={psbt.PSBT_GLOBAL_TX_VERSION}
-                />
+                <VersionItem txVersion={psbt.PSBT_GLOBAL_TX_VERSION} />
                 <GlobalItem
                   editable={editableFallbackLocktime}
                   editingType="number"

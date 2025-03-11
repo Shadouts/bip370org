@@ -84,13 +84,13 @@ export const useUpdatePsbt = () => {
         newEncoding = getEncoding(psbt);
         const version = getPsbtVersionNumber(psbt);
         if (version === 2) {
-          newPsbt = new PsbtV2(psbt);
+          newPsbt = new PsbtV2(psbt, true);
         } else {
           newPsbt = PsbtV2.FromV0(psbt, true);
         }
         newHistory.push(psbt);
       } else {
-        newPsbt = new PsbtV2(psbt.serialize());
+        newPsbt = new PsbtV2(psbt.serialize(), true);
         newHistory.push(psbt.serialize());
       }
       setState({
@@ -115,7 +115,7 @@ export const usePsbt = () => {
 
   const version = getPsbtVersionNumber(psbt);
   if (version === 2) {
-    return new PsbtV2(psbt);
+    return new PsbtV2(psbt, true);
   } else {
     return PsbtV2.FromV0(psbt, true);
   }
