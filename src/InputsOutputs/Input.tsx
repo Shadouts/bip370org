@@ -73,7 +73,7 @@ const InputHeader = ({ index: i }: { index: number }) => {
               <Col>
                 <OverlayTrigger overlay={<Tooltip>Delete input</Tooltip>}>
                   <b onClick={onDelete} style={{ cursor: "pointer" }}>
-                    <u>␡</u>
+                    ✕
                   </b>
                 </OverlayTrigger>
               </Col>

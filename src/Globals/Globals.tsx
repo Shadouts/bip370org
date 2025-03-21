@@ -24,8 +24,19 @@ const MovableItems = () => {
   );
 };
 
-const VersionItem = ({ txVersion }: { txVersion: number }) => {
-  if (txVersion === 1) {
+const VersionItem = () => {
+  const psbt = usePsbt();
+  const updatePsbt = useUpdatePsbt();
+
+  const txnVersionOnChange = useCallback(
+    (version: string) => {
+      psbt.PSBT_GLOBAL_TX_VERSION = parseInt(version);
+      updatePsbt(psbt);
+    },
+    [psbt],
+  );
+
+  if (psbt.PSBT_GLOBAL_TX_VERSION === 1) {
     return (
       <OverlayTrigger
         trigger={["hover", "focus"]}
@@ -43,14 +54,24 @@ const VersionItem = ({ txVersion }: { txVersion: number }) => {
           <GlobalItem
             style={{ color: "red" }}
             label="Tx version"
-            value={txVersion}
+            value={psbt.PSBT_GLOBAL_TX_VERSION}
+            editable={psbt.isReadyForConstructor}
+            editingType="number"
           />
         </div>
       </OverlayTrigger>
     );
   }
 
-  return <GlobalItem label="Tx version" value={txVersion} />;
+  return (
+    <GlobalItem
+      label="Tx version"
+      value={psbt.PSBT_GLOBAL_TX_VERSION}
+      editable={psbt.isReadyForConstructor}
+      editingType="number"
+      onChange={txnVersionOnChange}
+    />
+  );
 };
 
 export const Globals = () => {
@@ -95,13 +116,13 @@ export const Globals = () => {
                   label="Psbt version"
                   value={psbt.PSBT_GLOBAL_VERSION}
                 />
-                <VersionItem txVersion={psbt.PSBT_GLOBAL_TX_VERSION} />
+                <VersionItem />
                 <GlobalItem
+                  label="Fallback locktime"
+                  value={psbt.PSBT_GLOBAL_FALLBACK_LOCKTIME}
                   editable={editableFallbackLocktime}
                   editingType="number"
                   onChange={fallbackLocktimeOnChange}
-                  label="Fallback locktime"
-                  value={psbt.PSBT_GLOBAL_FALLBACK_LOCKTIME}
                 />
                 <GlobalItem label="Computed locktime" value={psbt.nLockTime} />
                 {xpubs && <MovableItems />}

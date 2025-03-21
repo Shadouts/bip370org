@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { ListGroup } from "react-bootstrap";
 import { SimpleInput } from "../Editing/SimpleInput";
+import { EditIcon } from "../Editing/EditIcon";
 
 export const GlobalItem = ({
   label,
@@ -70,7 +71,7 @@ export const GlobalItem = ({
               editable && onChange ? setEditingState(true) : null
             }
           >
-            {stringVal || "_"}
+            {!editable ? stringVal : stringVal || <EditIcon />}
           </div>
         )}
       </div>

@@ -68,7 +68,7 @@ const OutputHeader = ({ index: i }: { index: number }) => {
               <Col>
                 <OverlayTrigger overlay={<Tooltip>Delete output</Tooltip>}>
                   <b onClick={onDelete} style={{ cursor: "pointer" }}>
-                    <u>␡</u>
+                    ✕
                   </b>
                 </OverlayTrigger>
               </Col>
