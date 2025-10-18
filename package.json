@@ -1,6 +1,6 @@
 {
   "name": "bip370org",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A simple PSBTv2 explorer.",
   "main": "index.js",
   "private": true,

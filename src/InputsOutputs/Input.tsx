@@ -13,6 +13,7 @@ import { InputPartialSigs } from "./InputPartialSigs";
 import { InputSighashType } from "./InputSighashType";
 import { InputHashes } from "./InputHashes";
 import { useCallback, useMemo } from "react";
+import { InputOutpoint } from "./InputOutpoint";
 
 const InputHeader = ({ index: i }: { index: number }) => {
   const psbt = usePsbt();
@@ -67,7 +68,7 @@ const InputHeader = ({ index: i }: { index: number }) => {
         <Col style={{ textAlign: "right" }}>
           <Row>
             <Col xs={canDelete ? 11 : 12}>
-              {`${psbt.PSBT_IN_PREVIOUS_TXID[i]}:${psbt.PSBT_IN_OUTPUT_INDEX[i]}`}
+              <InputOutpoint inputIndex={i} />
             </Col>
             {canDelete && (
               <Col>

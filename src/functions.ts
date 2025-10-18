@@ -49,3 +49,13 @@ export const formatBip32Path = (fingerprint: string, sequence: string) => {
   let path = getBip32Path(sequence);
   return path.replace(/^m\//, `${fingerprint}/`);
 };
+
+export const reverseHexStringEndianness = (hexString: string) => {
+  if (validateHex(hexString) !== "") {
+    throw new Error("Input string is not valid hex");
+  }
+  return hexString
+    .match(/.{2}/g)!
+    .reverse()
+    .join("");
+}
