@@ -6,6 +6,7 @@ module.exports = {
   target: "web",
   watch: true,
   entry: "./src/index.tsx",
+  devtool: "inline-source-map",
   module: {
     rules: [
       {
@@ -24,10 +25,11 @@ module.exports = {
     path: path.resolve(__dirname, "./"),
   },
   plugins: [
-    // Work around for Buffer is undefined:
-    // https://github.com/webpack/changelog-v5/issues/10
     new webpack.ProvidePlugin({
+      // Work around for Buffer is undefined:
+      // https://github.com/webpack/changelog-v5/issues/10
       Buffer: ["buffer", "Buffer"],
+      process: "process/browser",
     }),
   ],
 };
