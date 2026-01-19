@@ -7,8 +7,8 @@ import DropdownButton from "react-bootstrap/DropdownButton";
 import { useCallback, useContext } from "react";
 import { PageContext } from "../Page";
 import { Network } from "@caravan/bitcoin";
-import { Button, OverlayTrigger, Tooltip } from "react-bootstrap";
-import { usePopHistory, useUpdatePsbt } from "../Page/context";
+import { Button, ButtonGroup, OverlayTrigger, Tooltip } from "react-bootstrap";
+import { usePopHistory, usePushHistory, useUpdatePsbt } from "../Page/context";
 
 const EXAMPLE_PSBTS = [
   "cHNidP8BAJ0BAAAAAnEOp2q0XFy2Q45gflnMA3YmmBgFrp4N/ZCJASq7C+U1AQAAAAD/////GQmU1qizyMgsy8+y+6QQaqBmObhyqNRHRlwNQliNbWcAAAAAAP////8CAOH1BQAAAAAZdqkUtrwsDuVlWoQ9ea/t0MzD991kNAmIrGBa9AUAAAAAFgAUEYjvjkzgRJ6qyPsUHL9aEXbmoIgAAAAATwEEiLIeA55TDKyAAAAAPbyKXJdp8DGxfnf+oVGGAyIaGP0Y8rmlTGyMGsdcvDUC8jBYSxVdHH8c1FEgplPEjWULQxtnxbLBPyfXFCA3wWkQJ1acUDEAAIAAAACAAAAAgAABAR8A4fUFAAAAABYAFDO5gvkbKPFgySC0q5XljOUN2jpKIgIDMJaA8zx9446mpHzU7NZvH1pJdHxv+4gI7QkDkkPjrVxHMEQCIC1wTO2DDFapCTRL10K2hS3M0QPpY7rpLTjnUlTSu0JFAiAthsQ3GV30bAztoITyopHD2i1kBw92v5uQsZXn7yj3cgEiBgMwloDzPH3jjqakfNTs1m8fWkl0fG/7iAjtCQOSQ+OtXBgnVpxQMQAAgAAAAIAAAACAAAAAAAEAAAAAAQEfAOH1BQAAAAAWABQ4j7lEMH63fvRRl9CwskXgefAR3iICAsd3Fh9z0LfHK57nveZQKT0T8JW8dlatH1Jdpf0uELEQRzBEAiBMsftfhpyULg4mEAV2ElQ5F5rojcqKncO6CPeVOYj6pgIgUh9JynkcJ9cOJzybFGFphZCTYeJb4nTqIA1+CIJ+UU0BIgYCx3cWH3PQt8crnue95lApPRPwlbx2Vq0fUl2l/S4QsRAYJ1acUDEAAIAAAACAAAAAgAAAAAAAAAAAAAAiAgLSDKUC7iiWhtIYFb1DqAY3sGmOH7zb5MrtRF9sGgqQ7xgnVpxQMQAAgAAAAIAAAACAAAAAAAQAAAAA",
@@ -16,9 +16,10 @@ const EXAMPLE_PSBTS = [
 ];
 
 export const Navbar = () => {
-  const { network, history, setState } = useContext(PageContext);
+  const { network, historyDepth, maxHistoryDepth, setState } = useContext(PageContext);
   const updatePsbt = useUpdatePsbt();
   const goBack = usePopHistory();
+  const goForward = usePushHistory();
 
   const setExample = useCallback(
     (example: number) => {
@@ -66,18 +67,32 @@ export const Navbar = () => {
             </NavDropdown>
           </Nav>
           <Nav>
-            <OverlayTrigger
-              overlay={<Tooltip>Undo previous change</Tooltip>}
-              placement="bottom"
-            >
-              <Button
-                variant="outline-secondary"
-                onClick={goBack}
-                disabled={history.length < 2}
+            <ButtonGroup>
+              <OverlayTrigger
+                overlay={<Tooltip>Undo previous change</Tooltip>}
+                placement="bottom"
               >
-                <b>⎌</b>
-              </Button>
-            </OverlayTrigger>
+                <Button
+                  variant="outline-secondary"
+                  onClick={goBack}
+                  disabled={historyDepth < 1}
+                >
+                  <b>↩</b>
+                </Button>
+              </OverlayTrigger>
+              <OverlayTrigger
+                overlay={<Tooltip>Redo previous change</Tooltip>}
+                placement="bottom"
+              >
+                <Button
+                  variant="outline-secondary"
+                  onClick={goForward}
+                  disabled={historyDepth >= maxHistoryDepth}
+                >
+                  <b>↪</b>
+                </Button>
+              </OverlayTrigger>
+            </ButtonGroup>
             <NavDropdown
               title="Examples"
               id="basic-nav-dropdown"

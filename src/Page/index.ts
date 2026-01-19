@@ -3,8 +3,10 @@ export { Page } from "./Page";
 export {
   PageContext,
   withContext,
-  useCurrentPsbtTransactionVersion,
+  useCurrentPsbtVersion,
   usePopHistory,
+  usePushHistory,
   usePsbt,
   useUpdatePsbt,
+  useSerializedPsbt,
 } from "./context";

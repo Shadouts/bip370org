@@ -1,8 +1,9 @@
 import { useContext, useMemo } from "react";
 import {
   PageContext,
-  useCurrentPsbtTransactionVersion,
+  useCurrentPsbtVersion,
   usePsbt,
+  useSerializedPsbt
 } from "../Page";
 import {
   Badge,
@@ -18,15 +19,8 @@ import {
 export const Psbt = () => {
   const { encoding, serializeAsV0, setState } = useContext(PageContext);
   const psbt = usePsbt();
-  const version = useCurrentPsbtTransactionVersion();
-
-  const serializedPsbt = useMemo(() => {
-    if (serializeAsV0 === "false") {
-      return psbt.serialize(encoding || undefined);
-    } else {
-      return psbt.toV0(encoding || undefined);
-    }
-  }, [encoding, psbt, serializeAsV0]);
+  const version = useCurrentPsbtVersion();
+  const serializedPsbt = useSerializedPsbt();
 
   return (
     <Col>
