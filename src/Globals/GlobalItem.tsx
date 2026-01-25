@@ -24,8 +24,8 @@ export const GlobalItem = ({
   const innerStyle = useMemo(() => {
     let inner = {
       paddingTop: 4,
-      flexGrow: 1,
-      textAlign: "right",
+      marginLeft: "auto",
+      textAlign: "left",
       fontFamily: "monospace",
       fontSize: 12,
       wordBreak: "break-all",

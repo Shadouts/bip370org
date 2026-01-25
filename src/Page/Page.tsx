@@ -10,7 +10,7 @@ import { Psbt } from "../Psbt";
 export const Page = () => {
   const psbt = usePsbt();
   return (
-    <Container>
+    <Container style={{ maxWidth: "1600px" }}>
       <Row>
         <h2>Bitcoin PSBTv2 Explorer</h2>
       </Row>
