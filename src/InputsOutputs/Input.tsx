@@ -64,7 +64,7 @@ const InputHeader = ({ index: i }: { index: number }) => {
   return (
     <Card.Header>
       <Row>
-        <Col x={2}>{`#${i}`}</Col>
+        <Col xs={1}>{`#${i}`}</Col>
         <Col style={{ textAlign: "right" }}>
           <Row>
             <Col xs={canDelete ? 11 : 12}>
