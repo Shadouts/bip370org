@@ -35,7 +35,7 @@ export const Navbar = () => {
 
   return (
     <Bootstrapbar expand="lg" className="bg-body-secondary">
-      <Container>
+      <Container style={{ maxWidth: "1600px" }}>
         <Bootstrapbar.Brand>BIP 370</Bootstrapbar.Brand>
         <Bootstrapbar.Toggle aria-controls="basic-navbar-nav" />
         <Bootstrapbar.Collapse id="basic-navbar-nav">
