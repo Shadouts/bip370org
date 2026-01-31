@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { ListGroup } from "react-bootstrap";
-import { SimpleInput } from "../Editing/SimpleInput";
-import { EditIcon } from "../Editing/EditIcon";
+import { SimpleInput } from "./SimpleInput";
+import { EditIcon } from "./EditIcon";
 
 export const GlobalItem = ({
   label,

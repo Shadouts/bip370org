@@ -7,12 +7,13 @@ import {
   Row,
   Tooltip,
 } from "react-bootstrap";
-import { GlobalItem } from "../Globals/GlobalItem";
+import { GlobalItem } from "../Fields";
 import { Bip32Derivation } from "./Bip32Derivation";
 import { InputPartialSigs } from "./InputPartialSigs";
 import { InputSighashType } from "./InputSighashType";
 import { InputHashes } from "./InputHashes";
 import { useCallback, useMemo } from "react";
+import { RemoveIcon } from "../Icons";
 import { InputOutpoint } from "./InputOutpoint";
 
 const InputHeader = ({ index: i }: { index: number }) => {
@@ -73,9 +74,9 @@ const InputHeader = ({ index: i }: { index: number }) => {
             {canDelete && (
               <Col>
                 <OverlayTrigger overlay={<Tooltip>Delete input</Tooltip>}>
-                  <b onClick={onDelete} style={{ cursor: "pointer" }}>
-                    ✕
-                  </b>
+                  <span onClick={onDelete} style={{ cursor: "pointer" }}>
+                    <RemoveIcon />
+                  </span>
                 </OverlayTrigger>
               </Col>
             )}

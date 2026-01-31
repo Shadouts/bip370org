@@ -7,10 +7,11 @@ import {
   Row,
   Tooltip,
 } from "react-bootstrap";
-import { GlobalItem } from "../Globals/GlobalItem";
+import { GlobalItem } from "../Fields";
 import { OutputAddress } from "./OutputAddress";
 import { Bip32Derivation } from "./Bip32Derivation";
 import { usePsbt, useUpdatePsbt } from "../Page/context";
+import { RemoveIcon } from "../Icons";
 
 const OutputHeader = ({ index: i }: { index: number }) => {
   const psbt = usePsbt();
@@ -67,9 +68,9 @@ const OutputHeader = ({ index: i }: { index: number }) => {
             {canDelete && (
               <Col>
                 <OverlayTrigger overlay={<Tooltip>Delete output</Tooltip>}>
-                  <b onClick={onDelete} style={{ cursor: "pointer" }}>
-                    ✕
-                  </b>
+                  <span onClick={onDelete} style={{ cursor: "pointer" }}>
+                    <RemoveIcon />
+                  </span>
                 </OverlayTrigger>
               </Col>
             )}
