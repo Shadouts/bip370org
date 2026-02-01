@@ -1,5 +1,5 @@
 import React from "react";
-import { GlobalItem } from "../Globals/GlobalItem";
+import { GlobalItem } from "../Fields/GlobalItem";
 import { usePsbt } from "../Page";
 
 export const InputPartialSigs = ({ inputIndex }: { inputIndex: number }) => {
