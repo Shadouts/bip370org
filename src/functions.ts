@@ -1,11 +1,13 @@
 import {
   ExtendedPublicKey,
+  bip32PathToSequence,
   bip32SequenceToPath,
   validBase64,
+  validateBIP32Path,
   validateHex,
 } from "@caravan/bitcoin";
 // @ts-ignore
-import { BufferReader } from "bufio";
+import { BufferReader, BufferWriter } from "bufio";
 
 export const getEncoding = (psbt: string) => {
   if (psbt === "") {
@@ -58,4 +60,45 @@ export const reverseHexStringEndianness = (hexString: string) => {
     .match(/.{2}/g)!
     .reverse()
     .join("");
-}
+};
+
+/**
+ * Converts a BIP32 path string to bytes (uint32LE sequence).
+ * Used for encoding BIP32 derivation values in PSBT.
+ */
+const bip32PathToBytes = (path: string): Buffer => {
+  const validationError = validateBIP32Path(path);
+  if (validationError !== "") {
+    throw new Error(validationError);
+  }
+
+  const sequence = bip32PathToSequence(path);
+  const bw = new BufferWriter();
+
+  for (const node of sequence) {
+    bw.writeU32(node);
+  }
+
+  return bw.render();
+};
+
+/**
+ * Encodes a BIP32 derivation value (fingerprint + path bytes).
+ * Used when adding BIP32 derivations to PSBT inputs/outputs.
+ */
+export const encodeBip32DerivationValue = (
+  fingerprint: string,
+  path: string
+): Buffer => {
+  const bw = new BufferWriter();
+  bw.writeBytes(Buffer.from(fingerprint, "hex"));
+  bw.writeBytes(bip32PathToBytes(path));
+  return bw.render();
+};
+
+export const xpubToHex = (xpubBase58: string): string => {
+  const xpub = ExtendedPublicKey.fromBase58(xpubBase58);
+  const bw = new BufferWriter();
+  xpub.write(bw);
+  return bw.render().toString("hex");
+};
