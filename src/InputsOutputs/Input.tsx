@@ -125,7 +125,7 @@ export const Input = ({ index: i }: { index: number }) => {
               value={psbt.PSBT_IN_WITNESS_UTXO[i]}
             />
           )}
-          {psbt.PSBT_IN_PARTIAL_SIG[i].length > 0 && (
+          {(psbt.PSBT_IN_PARTIAL_SIG[i].length > 0 || psbt.isReadyForSigner) && (
             <InputPartialSigs inputIndex={i} />
           )}
           {psbt.PSBT_IN_SIGHASH_TYPE[i] && <InputSighashType inputIndex={i} />}
