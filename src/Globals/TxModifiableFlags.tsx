@@ -1,5 +1,5 @@
 import { usePsbt } from "../Page";
-import { GlobalItem } from "./GlobalItem";
+import { GlobalItem } from "../Fields";
 
 export const TxModifiableFlags = () => {
   const psbt = usePsbt();
