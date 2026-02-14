@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { ListGroup } from "react-bootstrap";
-import { GlobalItem } from "../Globals/GlobalItem";
+import { GlobalItem } from "../Fields";
 import { bip32StringSlicer, formatBip32Path, getBip32Path } from "../functions";
 
 interface IDerivation {

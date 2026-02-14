@@ -1,4 +1,4 @@
-import { GlobalItem } from "../Globals/GlobalItem";
+import { GlobalItem } from "../Fields";
 import { SighashType as SighashTypeEnum } from "../types";
 import { usePsbt } from "../Page";
 

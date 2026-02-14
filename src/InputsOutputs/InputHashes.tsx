@@ -1,6 +1,6 @@
 import React from "react";
 import { usePsbt } from "../Page";
-import { GlobalItem } from "../Globals/GlobalItem";
+import { GlobalItem } from "../Fields";
 
 export const InputHashes = ({
   inputIndex,

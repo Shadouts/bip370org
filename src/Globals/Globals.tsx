@@ -7,9 +7,10 @@ import {
   OverlayTrigger,
   Popover,
 } from "react-bootstrap";
-import { GlobalItem } from "./GlobalItem";
+import { GlobalItem } from "../Fields";
 import { TxModifiableFlags } from "./TxModifiableFlags";
 import { GlobalXpubs } from "./GlobalXpubs";
+import { AddXpubInline } from "./AddXpubInline";
 import { usePsbt, useUpdatePsbt } from "../Page/context";
 
 const MovableItems = () => {
@@ -132,9 +133,10 @@ export const Globals = () => {
               <GlobalXpubs />
             ) : (
               <Col>
-                <ListGroup>
+                <ListGroup style={{marginBottom:"0.5rem"}}>
                   <MovableItems />
                 </ListGroup>
+                <AddXpubInline />
               </Col>
             )}
           </Row>
