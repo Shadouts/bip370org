@@ -17,8 +17,8 @@
   "author": "Shadouts",
   "license": "ISC",
   "dependencies": {
-    "@caravan/bitcoin": "^0.4.4",
-    "@caravan/psbt": "^2.0.7",
+    "@caravan/bitcoin": "^0.4.5",
+    "@caravan/psbt": "^2.1.0",
     "bitcoinjs-lib": "^7.0.0",
     "bootstrap": "^5.3.8",
     "bufio": "^1.2.3",
